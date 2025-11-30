@@ -1,10 +1,11 @@
-# Travel & Car Rental Website
+# Auto
 
-A modern Next.js website for a travel and car rental company showcasing car rental services, luxury car rentals, and logistics solutions across India. This project was developed as part of an internship assignment.
+A modern Next.js platform built as part of an internship assignment, showcasing my ability to design and develop production-level, interactive, and animation-heavy web applications.
 
 ## Overview
 
-This website provides a comprehensive platform for customers to explore and book various travel services including standard car rentals, luxury vehicles, and logistics services. The application features interactive animations, smooth scrolling experiences, and a responsive design optimized for all devices.
+This project demonstrates a fully featured service-based platform built with Next.js 14+, focusing on dynamic content experiences, 3D integrations, micro-interactions, scroll-driven animations, and a device-adaptive interface.
+The application highlights how a real-world business can present its services through immersive UI, structured information flows, and responsive, high-performance design.
 
 ## Features
 
@@ -22,9 +23,17 @@ The website includes multiple service offerings with dedicated pages for car ren
 
 **Additional Tools:** React Intersection Observer for scroll detection, SVG Dotted Map for geographic visualizations
 
+
 ## Pages
 
-The application includes a homepage with comprehensive service overviews and dedicated pages for about, contact, and individual services including car rental, luxury cars, and logistics. Each service page provides detailed information, filtering options, and booking capabilities.
+The platform includes:
+
+- A feature-rich homepage with animated sections
+- An About page with structured company/service details
+- Contact page with interaction-ready components
+- Dedicated service pages with deep-dive content, filtering logic, and call-to-action sections
+
+Each page is optimized for responsiveness, accessibility, and smooth interaction.
 
 ## Development
 
