@@ -11,7 +11,7 @@ The application highlights how a real-world business can present its services th
 
 ## Features
 
-The website includes multiple service offerings with dedicated pages for car rental, luxury cars, and logistics. The homepage features a hero section with animated car transitions, destination showcases, travel car listings with filtering capabilities, YouTube video integration, testimonials, and an interactive memories story section. The logistics section includes detailed service information, coverage areas, and story-based presentations. All pages are fully responsive and include smooth animations powered by Framer Motion and Three.js.
+The platform includes multiple service sections with rich user experiences such as an animated hero section with advanced transitions, interactive showcases with category-based filtering, integrated YouTube video embeds, and testimonial layouts. It also features scroll-driven storytelling powered by Scrollama, an immersive “memories/story” experience with motion effects, and a 3D globe visualization within the logistics and coverage section. All components are fully responsive, supported by smooth animations across pages, and follow a consistent design system built on reusable UI blocks.
 
 ## Tech Stack
 
