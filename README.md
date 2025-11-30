@@ -2,6 +2,8 @@
 
 A modern Next.js platform built as part of an internship assignment, showcasing my ability to design and develop production-level, interactive, and animation-heavy web applications.
 
+**Live URL:** https://travel-fsi2ms884-lethrachs-projects.vercel.app/
+
 ## Overview
 
 This project demonstrates a fully featured service-based platform built with Next.js 14+, focusing on dynamic content experiences, 3D integrations, micro-interactions, scroll-driven animations, and a device-adaptive interface.
