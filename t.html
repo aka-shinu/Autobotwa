@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Background Remover</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: #0f172a;
+      color: #e5e7eb;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .app {
+      margin: 24px;
+      max-width: 960px;
+      width: 100%;
+      background: #020617;
+      border-radius: 18px;
+      padding: 24px 24px 32px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      border: 1px solid #1f2937;
+    }
+
+    .app-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge {
+      font-size: 0.75rem;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #10b98122;
+      color: #6ee7b7;
+      border: 1px solid #10b98155;
+    }
+
+    .description {
+      font-size: 0.9rem;
+      color: #9ca3af;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 16px 0 20px;
+      align-items: center;
+    }
+
+    .file-input-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: #1e293b;
+      border: 1px dashed #4b5563;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background 0.15s, transform 0.05s, border-color 0.15s;
+    }
+
+    .file-input-label:hover {
+      background: #111827;
+      border-color: #60a5fa;
+    }
+
+    .file-input-label:active {
+      transform: scale(0.98);
+    }
+
+    .file-input-label span.icon {
+      font-size: 1rem;
+    }
+
+    #fileInput {
+      display: none;
+    }
+
+    .pill-group {
+      display: inline-flex;
+      background: #020617;
+      padding: 4px;
+      border-radius: 999px;
+      border: 1px solid #1f2937;
+      gap: 2px;
+    }
+
+    .pill-button {
+      border: none;
+      background: transparent;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      color: #9ca3af;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .pill-button.active {
+      background: #0ea5e9;
+      color: #0b1120;
+    }
+
+    .slider-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      color: #9ca3af;
+    }
+
+    .slider-group input[type="range"] {
+      width: 140px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    button.primary {
+      border: none;
+      border-radius: 999px;
+      padding: 8px 16px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      background: #22c55e;
+      color: #022c22;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.15s, transform 0.05s, box-shadow 0.15s;
+      box-shadow: 0 10px 20px rgba(34, 197, 94, 0.28);
+    }
+
+    button.primary:hover {
+      background: #16a34a;
+    }
+
+    button.primary:active {
+      transform: translateY(1px) scale(0.99);
+      box-shadow: 0 4px 12px rgba(34, 197, 94, 0.35);
+    }
+
+    button.secondary {
+      border-radius: 999px;
+      border: 1px solid #374151;
+      background: #020617;
+      padding: 8px 14px;
+      font-size: 0.85rem;
+      color: #e5e7eb;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.15s, border-color 0.15s, transform 0.05s;
+    }
+
+    button.secondary:hover {
+      background: #020617;
+      border-color: #60a5fa;
+    }
+
+    button.secondary:active {
+      transform: scale(0.99);
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      box-shadow: none !important;
+      transform: none !important;
+    }
+
+    .canvas-wrapper {
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    .canvas-card {
+      background: radial-gradient(circle at top, #111827, #020617 55%);
+      border-radius: 14px;
+      padding: 12px;
+      border: 1px solid #111827;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-height: 260px;
+    }
+
+    .canvas-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: #9ca3af;
+    }
+
+    .canvas-container {
+      position: relative;
+      flex: 1;
+      border-radius: 10px;
+      overflow: hidden;
+      background: repeating-conic-gradient(#020617 0% 25%, #0b1120 0% 50%) 50% / 18px 18px;
+      border: 1px solid #1f2937;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    canvas {
+      max-width: 100%;
+      max-height: 400px;
+      image-rendering: auto;
+    }
+
+    .placeholder {
+      font-size: 0.8rem;
+      color: #6b7280;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .file-name {
+      font-size: 0.8rem;
+      color: #9ca3af;
+      max-width: 280px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .chip {
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-size: 0.7rem;
+      border: 1px solid #1f2937;
+      color: #9ca3af;
+    }
+
+    @media (max-width: 600px) {
+      .app {
+        padding: 16px 16px 24px;
+        margin: 12px;
+      }
+      .title {
+        font-size: 1.25rem;
+      }
+      .controls {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="app-header">
+      <div>
+        <div class="title">
+          Background Remover
+          <span class="badge">PNG • Transparent</span>
+        </div>
+        <p class="description">
+          Upload an image, choose whether to remove a white or black background, then download a PNG with that background fully transparent.
+        </p>
+      </div>
+    </div>
+
+    <div class="controls">
+      <!-- File upload -->
+      <label for="fileInput" class="file-input-label">
+        <span class="icon">📁</span>
+        <span>Select image…</span>
+      </label>
+      <input type="file" id="fileInput" accept="image/*" />
+
+      <!-- Background color select -->
+      <div class="pill-group" aria-label="Background color to remove">
+        <button class="pill-button active" data-bg="white" id="btnWhite">Remove white</button>
+        <button class="pill-button" data-bg="black" id="btnBlack">Remove black</button>
+      </div>
+
+      <!-- Tolerance -->
+      <div class="slider-group">
+        <span>Threshold</span>
+        <input type="range" id="tolerance" min="0" max="80" value="30" />
+        <span id="toleranceValue">30</span>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button id="processBtn" class="primary" disabled>
+        <span>✨ Remove background</span>
+      </button>
+      <button id="downloadBtn" class="secondary" disabled>
+        ⬇️ Download PNG
+      </button>
+      <span class="file-name" id="fileName"></span>
+    </div>
+
+    <div class="canvas-wrapper">
+      <div class="canvas-card">
+        <div class="canvas-card-header">
+          <span>Original</span>
+          <span class="chip" id="infoOriginal">No image</span>
+        </div>
+        <div class="canvas-container">
+          <canvas id="originalCanvas"></canvas>
+          <div class="placeholder" id="originalPlaceholder">
+            Upload an image to preview it here.
+          </div>
+        </div>
+      </div>
+
+      <div class="canvas-card">
+        <div class="canvas-card-header">
+          <span>Result</span>
+          <span class="chip" id="infoResult">Waiting</span>
+        </div>
+        <div class="canvas-container">
+          <canvas id="resultCanvas"></canvas>
+          <div class="placeholder" id="resultPlaceholder">
+            Click “Remove background” after uploading to see the result.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const fileInput = document.getElementById("fileInput");
+    const originalCanvas = document.getElementById("originalCanvas");
+    const resultCanvas = document.getElementById("resultCanvas");
+    const processBtn = document.getElementById("processBtn");
+    const downloadBtn = document.getElementById("downloadBtn");
+    const fileNameSpan = document.getElementById("fileName");
+    const toleranceInput = document.getElementById("tolerance");
+    const toleranceValue = document.getElementById("toleranceValue");
+    const infoOriginal = document.getElementById("infoOriginal");
+    const infoResult = document.getElementById("infoResult");
+    const originalPlaceholder = document.getElementById("originalPlaceholder");
+    const resultPlaceholder = document.getElementById("resultPlaceholder");
+
+    const btnWhite = document.getElementById("btnWhite");
+    const btnBlack = document.getElementById("btnBlack");
+
+    const originalCtx = originalCanvas.getContext("2d");
+    const resultCtx = resultCanvas.getContext("2d");
+
+    let currentImage = null;
+    let bgMode = "white"; // or "black"
+
+    // Switch background color mode
+    function setBgMode(mode) {
+      bgMode = mode;
+      [btnWhite, btnBlack].forEach((btn) => {
+        btn.classList.toggle("active", btn.dataset.bg === mode);
+      });
+      if (currentImage) {
+        infoResult.textContent = `Ready (${mode} background)`;
+      }
+    }
+
+    btnWhite.addEventListener("click", () => setBgMode("white"));
+    btnBlack.addEventListener("click", () => setBgMode("black"));
+
+    // Tolerance slider
+    toleranceInput.addEventListener("input", () => {
+      toleranceValue.textContent = toleranceInput.value;
+    });
+
+    // Load image from file input
+    fileInput.addEventListener("change", (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          currentImage = img;
+          fileNameSpan.textContent = file.name;
+          drawOriginalImage();
+          processBtn.disabled = false;
+          infoOriginal.textContent = `${img.width}×${img.height}px`;
+          infoResult.textContent = `Ready (${bgMode} background)`;
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    function drawOriginalImage() {
+      if (!currentImage) return;
+
+      const maxWidth = 600;
+      const maxHeight = 400;
+      let { width, height } = currentImage;
+
+      const ratio = Math.min(maxWidth / width, maxHeight / height, 1);
+      width = Math.round(width * ratio);
+      height = Math.round(height * ratio);
+
+      originalCanvas.width = width;
+      originalCanvas.height = height;
+      resultCanvas.width = width;
+      resultCanvas.height = height;
+
+      originalCtx.clearRect(0, 0, width, height);
+      originalCtx.drawImage(currentImage, 0, 0, width, height);
+
+      originalPlaceholder.style.display = "none";
+      resultPlaceholder.style.display = "flex";
+      infoResult.textContent = "Waiting";
+    }
+
+    // Core algorithm: remove white or black background by threshold
+    function removeBackground() {
+      if (!currentImage) return;
+
+      const width = originalCanvas.width;
+      const height = originalCanvas.height;
+
+      const imageData = originalCtx.getImageData(0, 0, width, height);
+      const data = imageData.data;
+      const tolerance = parseInt(toleranceInput.value, 10);
+
+      for (let i = 0; i < data.length; i += 4) {
+        const r = data[i];
+        const g = data[i + 1];
+        const b = data[i + 2];
+        // alpha at data[i + 3]
+
+        if (bgMode === "white") {
+          // Near white: high RGB
+          if (r >= 255 - tolerance && g >= 255 - tolerance && b >= 255 - tolerance) {
+            data[i + 3] = 0; // make transparent
+          }
+        } else {
+          // Near black: low RGB
+          if (r <= tolerance && g <= tolerance && b <= tolerance) {
+            data[i + 3] = 0;
+          }
+        }
+      }
+
+      resultCtx.putImageData(imageData, 0, 0);
+      resultPlaceholder.style.display = "none";
+      infoResult.textContent = "Processed ✓";
+      downloadBtn.disabled = false;
+    }
+
+    processBtn.addEventListener("click", () => {
+      if (!currentImage) return;
+      removeBackground();
+    });
+
+    downloadBtn.addEventListener("click", () => {
+      const link = document.createElement("a");
+      const baseName = fileNameSpan.textContent || "image";
+      const suffix = bgMode === "white" ? "no-white-bg" : "no-black-bg";
+      const safeName = baseName.replace(/\.[^.]+$/, ""); // remove extension
+      link.download = `${safeName}-${suffix}.png`;
+      link.href = resultCanvas.toDataURL("image/png");
+      link.click();
+    });
+
+    // Redraw on resize (optional, keeps proportions, but not strictly needed)
+    window.addEventListener("resize", () => {
+      if (currentImage) {
+        drawOriginalImage();
+      }
+    });
+  </script>
+</body>
+</html>

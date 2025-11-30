@@ -1,0 +1,212 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+}
+.bgi {
+  background-color: #e5e5f7;
+  opacity: 0.8;
+  background-image:  repeating-linear-gradient(45deg, #1069ff 25%, transparent 25%, transparent 75%, #1069ff 75%, #1069ff), repeating-linear-gradient(45deg, #1069ff 25%, #e5e5f7 25%, #e5e5f7 75%, #1069ff 75%, #1069ff);
+  background-position: 0 0, 40px 40px;
+  background-size: 80px 80px;
+}
+/* Swiper Custom Styles */
+.swiper-pagination {
+  bottom: 30px !important;
+}
+
+.swiper-pagination-bullet {
+  width: 12px !important;
+  height: 12px !important;
+  opacity: 0.5 !important;
+  background: rgba(255, 255, 255, 0.5) !important;
+  transition: all 0.3s ease !important;
+}
+
+.swiper-pagination-bullet-active {
+  opacity: 1 !important;
+  background: #dc2626 !important;
+  width: 30px !important;
+  border-radius: 6px !important;
+}
+
+/* Header Animation Optimization */
+header {
+  contain: layout style paint;
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Marquee Animation */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 50s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Shimmer Animation */
+@keyframes shimmer {
+  0% {
+    transform: skewX(-20deg) translateX(-100%);
+  }
+  100% {
+    transform: skewX(-20deg) translateX(200%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 3s infinite;
+}
+
+/* Services Section Swiper Styles */
+.services-swiper .swiper-pagination {
+  position: relative !important;
+  bottom: auto !important;
+  margin-top: 24px;
+}
+
+.services-swiper .swiper-pagination-bullet {
+  background: rgba(156, 163, 175, 0.5) !important;
+  opacity: 1 !important;
+}
+
+.services-swiper .swiper-pagination-bullet-active {
+  background: #dc2626 !important;
+}
+
+/* Memories Section Swiper Styles */
+.memories-swiper .swiper-pagination {
+  bottom: 40px !important;
+  z-index: 10;
+}
+
+.memories-swiper .swiper-pagination-bullet {
+  width: 12px !important;
+  height: 12px !important;
+  opacity: 0.5 !important;
+  background: rgba(255, 255, 255, 0.5) !important;
+  transition: all 0.3s ease !important;
+  margin: 0 6px !important;
+}
+
+.memories-swiper .swiper-pagination-bullet-active {
+  opacity: 1 !important;
+  background: #dc2626 !important;
+  width: 30px !important;
+  border-radius: 6px !important;
+}
+
+/* Travel-themed Car Animation */
+@keyframes carDriveIn {
+  0% {
+    transform: translateX(-100%) scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    transform: translateX(-10%) scale(1.05);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes carDriveOut {
+  0% {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%) scale(0.8);
+    opacity: 0;
+  }
+}
+
+.animate-car-in {
+  animation: carDriveIn 0.8s ease-out;
+}
+
+.animate-car-out {
+  animation: carDriveOut 0.6s ease-in;
+}
+
+/* Road Movement Effect */
+@keyframes roadMove {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-road-move {
+  animation: roadMove 2s linear infinite;
+}
+
+/* Travel Transition Overlay */
+@keyframes travelTransition {
+  0% {
+    opacity: 0;
+    transform: scale(1.1);
+  }
+  50% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+
+.travel-transition-overlay {
+  animation: travelTransition 1s ease-in-out;
+}
+
+/* Memory Slide Fade */
+@keyframes memoryFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.memory-slide-enter {
+  animation: memoryFadeIn 0.6s ease-out;
+}
+
+/* Memories Storytelling Section */
+.memories-story-section {
+  scroll-snap-type: y mandatory;
+}
+
+.memories-story-step {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
